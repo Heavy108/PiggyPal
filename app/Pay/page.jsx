@@ -5,13 +5,22 @@ import { useTransactionStore } from "@/store/useTransactionStore";
 
 function TransactionInput() {
   const [inputValue, setInputValue] = useState("");
+  const [data, setData] = useState([]);
+  const [profile, setProfile] = useState({});
   const { value, setValue } = useTransactionStore();
-  const data = JSON.parse(localStorage.getItem("formData")) || [];
-  const profile = data[value] || {};
 
-  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = JSON.parse(localStorage.getItem("formData")) || [];
+      setData(storedData);
+      const userProfile = storedData[value] || {};
+      setProfile(userProfile);
+    }
+  }, [value]);
 
   const handleAddTransaction = () => {
+    if (typeof window === "undefined") return; // Ensure we're on the client side
+
     let amount = parseInt(inputValue, 10);
     if (isNaN(amount) || amount <= 0) {
       alert("Please enter a valid positive integer");
@@ -30,11 +39,10 @@ function TransactionInput() {
       values = Math.ceil(min);
     }
 
-    
-    storedValues[value].push(values)
+    storedValues[value].push(values);
     localStorage.setItem("values", JSON.stringify(storedValues));
     setInputValue(""); // Clear input field
-    alert("payment Successful")
+    alert("Payment Successful");
   };
 
   return (

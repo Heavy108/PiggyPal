@@ -1,25 +1,34 @@
 "use client";
 import { useTransactionStore } from "@/store/useTransactionStore";
 import { useState, useEffect } from "react";
-import {Navbar} from "@/components/navbar"
+import { Navbar } from "@/components/navbar";
+
 function Profile() {
   const { value, setValue } = useTransactionStore();
-  const data = JSON.parse(localStorage.getItem("formData")) || [];
-  const profile = data[value] || {};
+  const [data, setData] = useState([]);
+  const [profile, setProfile] = useState({});
+  const [sliderValue, setSliderValue] = useState(0);
 
-  const [sliderValue, setSliderValue] = useState(profile.sliderValue || 0);
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("formData")) || [];
+    setData(storedData);
+    const userProfile = storedData[value] || {};
+    setProfile(userProfile);
+    setSliderValue(userProfile.sliderValue || 0);
+  }, [value]);
 
   useEffect(() => {
     if (profile) {
-      profile.sliderValue = sliderValue; // Update the object
-      data[value] = profile; // Update the array
-      localStorage.setItem("formData", JSON.stringify(data)); // Save back to localStorage
+      const updatedProfile = { ...profile, sliderValue };
+      const updatedData = [...data];
+      updatedData[value] = updatedProfile;
+      localStorage.setItem("formData", JSON.stringify(updatedData));
     }
-  }, [sliderValue, value]);
+  }, [sliderValue, value, profile, data]);
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <h2>Profile</h2>
       <input
         type="range"

@@ -1,6 +1,7 @@
 "use client";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@heroui/button";
+import { useEffect } from "react";
 
 import {
   Table,
@@ -165,12 +166,28 @@ const columns = [
 
 function Transaction() {
   const { value, setValue } = useTransactionStore();
-  const data = JSON.parse(localStorage.getItem("formData")) || [];
-  const profile = data[value] || {};
+  const [data, setData] = useState([]);
+  const [profile, setProfile] = useState({});
+  const [storedValues, setStoredValues] = useState({});
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = JSON.parse(localStorage.getItem("formData")) || [];
+      setData(storedData);
+      const userProfile = storedData[value] || {};
+      setProfile(userProfile);
+
+      const existingValues = JSON.parse(localStorage.getItem("values")) || {};
+      setStoredValues(existingValues);
+    }
+  }, [value]);
+
   const handlePress = () => {
+    if (typeof window === "undefined") return; // Ensure we're on the client side
+
     let sum = 0;
-    let storedValues = JSON.parse(localStorage.getItem("values")) || {}; // Retrieve existing array or initialize
-    storedValues[value] = storedValues[value] || []
+    let storedValuesLocal = { ...storedValues };
+    storedValuesLocal[value] = storedValuesLocal[value] || [];
     rows.forEach((item) => {
       let values = 0;
       let decimalPart = item.amount % 10;
@@ -184,12 +201,9 @@ function Transaction() {
       sum += values;
     });
 
-    
-
-    storedValues[value].push(sum); // Append new sum to the array
-    localStorage.setItem("values", JSON.stringify(storedValues)); // Save updated array
+    storedValuesLocal[value].push(sum); // Append new sum to the array
+    localStorage.setItem("values", JSON.stringify(storedValuesLocal)); // Save updated array
   };
-
 
   return (
     <>
@@ -215,11 +229,12 @@ function Transaction() {
 
       <center className={style.init}>
         <Button onPress={handlePress} color="primary">
-          Initalize
+          Initialize
         </Button>
       </center>
-      <center>Note: this button is only for the demonstration Purpose</center>
+      <center>Note: this button is only for demonstration purposes.</center>
     </>
   );
 }
+
 export default Transaction;
