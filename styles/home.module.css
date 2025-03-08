@@ -1,0 +1,11 @@
+.homeContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4rem;
+    
+}
+.homeContainer svg{
+    font-size: 6rem;
+    margin: 2rem;
+}

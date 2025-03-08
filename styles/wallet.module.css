@@ -1,0 +1,28 @@
+.wallet{
+    opacity: 0.4;
+}
+.wallBody{
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+}
+.inr{
+    margin-right: 1rem;
+    opacity: 0.5;
+}
+.card{
+    width: 90%;
+
+}
+.transHistory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+    flex-direction: column;
+}
+.hist{
+    display: flex;
+    justify-content: space-between;
+   
+}

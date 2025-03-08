@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     {
       label: "Wallet",
-      href: "/docs",
+      href: "/wallet",
     },
     {
       label: "Transaction",

@@ -1,18 +1,40 @@
-import { Link } from "@heroui/link";
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
-import { button as buttonStyles } from "@heroui/theme";
 
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
 import { Navbar } from "@/components/navbar";
-
+import { IoWallet } from "react-icons/io5";
+import { AiOutlineTransaction, AiFillBank } from "react-icons/ai";
+import Link from "next/link";
+import style from "@/styles/home.module.css"
 export default function Home() {
   return (
     <>
-    <Navbar/>
-    {/* <div>what's up  APIs</div> */}
+      <Navbar />
+      <div className={style.homeContainer}>
+        <Link href="/wallet">
+          {" "}
+          <IoWallet />
+          
+        </Link>
+        <Link href="/transaction">
+          {" "}
+          <AiOutlineTransaction />
+        </Link>
+        <Link href="#">
+          {" "}
+          <AiFillBank />
+        </Link>
+        <Link href="#">
+          {" "}
+          <IoWallet />
+        </Link>
+        <Link href="#">
+          {" "}
+          <IoWallet />
+        </Link>
+        <Link href="#">
+          {" "}
+          <IoWallet />
+        </Link>
+      </div>
     </>
   );
 }

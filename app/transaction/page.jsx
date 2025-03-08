@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@heroui/button";
 
@@ -11,7 +11,9 @@ import {
   TableCell,
   getKeyValue,
 } from "@heroui/table";
-import style from "@/styles/"
+import style from "@/styles/Transaction.module.css";
+import { useState } from "react";
+import { useTransactionStore } from "@/store/useTransactionStore";
 
 const rows = [
   {
@@ -146,7 +148,6 @@ const rows = [
   },
 ];
 
-
 const columns = [
   {
     key: "transaction_id",
@@ -161,7 +162,33 @@ const columns = [
     label: "Amount",
   },
 ];
+
 function Transaction() {
+  const { value, setValue } = useTransactionStore();
+  const handlePress = () => {
+    let sum = 0;
+    let storedValues = JSON.parse(localStorage.getItem("values")) || []; // Retrieve existing array or initialize
+
+    rows.forEach((item) => {
+      let values = 0;
+      let decimalPart = item.amount % 10;
+      let diff = 10 - decimalPart;
+      let min = Math.min(decimalPart, diff);
+      if (min === 0) {
+        values = 3;
+      } else {
+        values = Math.ceil(min);
+      }
+      sum += values;
+    });
+
+    setValue(sum);
+
+    storedValues.push(sum); // Append new sum to the array
+    localStorage.setItem("values", JSON.stringify(storedValues)); // Save updated array
+  };
+
+
   return (
     <>
       <Navbar />
@@ -185,8 +212,11 @@ function Transaction() {
       </div>
 
       <center className={style.init}>
-        <Button>Initalize</Button>
+        <Button onPress={handlePress} color="primary">
+          Initalize
+        </Button>
       </center>
+      <center>Note: this button is only for the demonstration Purpose</center>
     </>
   );
 }
