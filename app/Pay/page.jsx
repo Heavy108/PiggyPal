@@ -8,6 +8,7 @@ function TransactionInput() {
   const [data, setData] = useState([]);
   const [profile, setProfile] = useState({});
   const { value, setValue } = useTransactionStore();
+  const [storedValues, setStoredValues] = useState({});
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -15,35 +16,39 @@ function TransactionInput() {
       setData(storedData);
       const userProfile = storedData[value] || {};
       setProfile(userProfile);
+      const existingValues = JSON.parse(localStorage.getItem("values")) || {};
+      setStoredValues(existingValues);
     }
   }, [value]);
 
   const handleAddTransaction = () => {
-    if (typeof window === "undefined") return; // Ensure we're on the client side
+    if (typeof window === "undefined") return; // Ensure client-side execution
 
     let amount = parseInt(inputValue, 10);
     if (isNaN(amount) || amount <= 0) {
       alert("Please enter a valid positive integer");
       return;
     }
-    let storedValues = JSON.parse(localStorage.getItem("values")) || [];
-    storedValues[value] = storedValues[value] || [];
-    let values = 0;
+
+    let storedValuesLocal = JSON.parse(localStorage.getItem("values")) || {};
+
+    if (!Array.isArray(storedValuesLocal[value])) {
+      storedValuesLocal[value] = [];
+    }
+
     let decimalPart = amount % 10;
     let diff = 10 - decimalPart;
     let min = Math.min(decimalPart, diff);
+    let values = min === 0 ? profile.sliderValue || 3 : Math.ceil(min);
 
-    if (min === 0) {
-      values = profile.sliderValue || 3;
-    } else {
-      values = Math.ceil(min);
-    }
+    storedValuesLocal[value].push(values);
+    localStorage.setItem("values", JSON.stringify(storedValuesLocal));
 
-    storedValues[value].push(values);
-    localStorage.setItem("values", JSON.stringify(storedValues));
+    setStoredValues(storedValuesLocal); // Update state
     setInputValue(""); // Clear input field
     alert("Payment Successful");
   };
+
 
   return (
     <>
@@ -58,7 +63,7 @@ function TransactionInput() {
           style={{ padding: "10px", marginRight: "10px" }}
         />
         <button onClick={handleAddTransaction} style={{ padding: "10px" }}>
-          Add Transaction
+          proceede
         </button>
       </div>
     </>

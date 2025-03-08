@@ -5,26 +5,26 @@ import { Navbar } from "@/components/navbar";
 
 function Profile() {
   const { value, setValue } = useTransactionStore();
-  const [data, setData] = useState([]);
   const [profile, setProfile] = useState({});
   const [sliderValue, setSliderValue] = useState(0);
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("formData")) || [];
-    setData(storedData);
-    const userProfile = storedData[value] || {};
-    setProfile(userProfile);
-    setSliderValue(userProfile.sliderValue || 0);
+    if (typeof window !== "undefined") {
+      const data = JSON.parse(localStorage.getItem("formData")) || [];
+      const userProfile = data[value] || {};
+      setProfile(userProfile);
+      setSliderValue(userProfile.sliderValue || 0);
+    }
   }, [value]);
 
   useEffect(() => {
-    if (profile) {
-      const updatedProfile = { ...profile, sliderValue };
-      const updatedData = [...data];
-      updatedData[value] = updatedProfile;
-      localStorage.setItem("formData", JSON.stringify(updatedData));
+    if (typeof window !== "undefined" && profile) {
+      const data = JSON.parse(localStorage.getItem("formData")) || [];
+      profile.sliderValue = sliderValue;
+      data[value] = profile;
+      localStorage.setItem("formData", JSON.stringify(data));
     }
-  }, [sliderValue, value, profile, data]);
+  }, [sliderValue, value, profile]);
 
   return (
     <>

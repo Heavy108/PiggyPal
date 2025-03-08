@@ -8,6 +8,7 @@ import { useState } from "react";
 import Link from "next/link";
 import style from "@/styles/Login.module.css";
 import { Slider } from "@heroui/slider";
+import { useRouter } from "next/navigation";
 // export const EyeSlashFilledIcon = (props) => {
 //   return (
 //     <svg
@@ -70,6 +71,7 @@ import { Slider } from "@heroui/slider";
 export default function Login() {
   const [action, setAction] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter()
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   return (
@@ -102,7 +104,9 @@ export default function Login() {
             existingData[data.email] = data;
 
             localStorage.setItem("formData", JSON.stringify(existingData));
+            alert("registration complete")
             setAction(`submit ${JSON.stringify(data)}`);
+            router.push("/")
           }}
         >
           <Input

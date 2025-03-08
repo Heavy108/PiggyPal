@@ -203,6 +203,7 @@ function Transaction() {
 
     storedValuesLocal[value].push(sum); // Append new sum to the array
     localStorage.setItem("values", JSON.stringify(storedValuesLocal)); // Save updated array
+    alert("check the wallet")
   };
 
   return (

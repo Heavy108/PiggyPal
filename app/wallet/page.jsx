@@ -13,9 +13,10 @@ function Wallet() {
   const { value, setValue } = useTransactionStore();
 
   useEffect(() => {
-    const storedValues = JSON.parse(localStorage.getItem("values")) || [];
-    setTransactions(storedValues[value]);
-  }, []);
+    const storedValues = JSON.parse(localStorage.getItem("values")) || {};
+    const userTransactions = storedValues[value] || [];
+    setTransactions(userTransactions);
+  }, [value]);
 
   const totalAmount = transactions.reduce((acc, val) => acc + val, 0); // Sum of all transactions
 
