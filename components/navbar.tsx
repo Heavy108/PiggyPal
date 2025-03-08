@@ -25,6 +25,7 @@ import {
   SearchIcon,
   Logo,
 } from "@/components/icons";
+import { FaPaypal } from "react-icons/fa6";
 
 export const Navbar = () => {
   const searchInput = (
@@ -53,7 +54,7 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
+            <FaPaypal/>
             <p className="font-bold text-inherit">PiggyPal</p>
           </NextLink>
         </NavbarBrand>
@@ -127,7 +128,7 @@ export const Navbar = () => {
                       ? "danger"
                       : "foreground"
                 }
-                href="#"
+                href={item.href}
                 size="lg"
               >
                 {item.label}

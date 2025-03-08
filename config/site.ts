@@ -20,6 +20,10 @@ export const siteConfig = {
   ],
   navMenuItems: [
     {
+      label: "Pay",
+      href: "/Pay",
+    },
+    {
       label: "Profile",
       href: "/profile",
     },
@@ -30,20 +34,11 @@ export const siteConfig = {
     
     {
       label: "Wallet",
-      href: "/team",
+      href: "/wallet",
     },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
+    
+    
+    
     {
       label: "Logout",
       href: "/login",

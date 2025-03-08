@@ -9,6 +9,7 @@ import { useState } from "react";
 import Link from "next/link";
 import style from "@/styles/Login.module.css"
 import { useRouter } from "next/navigation"; 
+import { useTransactionStore } from "@/store/useTransactionStore";
 
 export const EyeSlashFilledIcon = (props) => {
   return (
@@ -72,10 +73,12 @@ export const EyeFilledIcon = (props) => {
 
 
 export default function Login() {
-  // const [action, setAction] = useState(null);
+ const { value, setValue } = useTransactionStore();
+
+
   const [isVisible, setIsVisible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
-  const router = useRouter(); // Initialize router
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const router = useRouter(); 
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -83,14 +86,16 @@ export default function Login() {
     e.preventDefault();
     let formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    let storedData = JSON.parse(localStorage.getItem("formData")) || {};
+    let storedData = JSON.parse(localStorage.getItem("formData")) || "{}";
 
     let emailInput = formData.email;
     let savedUser = storedData[emailInput]; 
 
     if (savedUser) {
       if (formData.password === savedUser.password) {
+        setValue(emailInput);
         router.push("/home");
+        
       } else {
         setErrorMessage("Invalid Password");
       }

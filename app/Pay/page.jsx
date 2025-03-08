@@ -1,10 +1,13 @@
 "use client";
 import { Navbar } from "@/components/navbar";
 import { useState, useEffect } from "react";
+import { useTransactionStore } from "@/store/useTransactionStore";
 
 function TransactionInput() {
   const [inputValue, setInputValue] = useState("");
-  
+  const { value, setValue } = useTransactionStore();
+  const data = JSON.parse(localStorage.getItem("formData")) || [];
+  const profile = data[value] || {};
 
   
 
@@ -15,19 +18,20 @@ function TransactionInput() {
       return;
     }
     let storedValues = JSON.parse(localStorage.getItem("values")) || [];
+    storedValues[value] = storedValues[value] || [];
     let values = 0;
     let decimalPart = amount % 10;
     let diff = 10 - decimalPart;
     let min = Math.min(decimalPart, diff);
 
     if (min === 0) {
-      values = 3;
+      values = profile.sliderValue || 3;
     } else {
       values = Math.ceil(min);
     }
 
     
-    storedValues.push(values)
+    storedValues[value].push(values)
     localStorage.setItem("values", JSON.stringify(storedValues));
     setInputValue(""); // Clear input field
     alert("payment Successful")

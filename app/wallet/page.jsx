@@ -6,13 +6,15 @@ import { Image } from "@heroui/image";
 import { Divider } from "@heroui/divider";
 import { SiHdfcbank } from "react-icons/si";
 import style from "@/styles/wallet.module.css";
+import { useTransactionStore } from "@/store/useTransactionStore";
 
 function Wallet() {
   const [transactions, setTransactions] = useState([]);
+  const { value, setValue } = useTransactionStore();
 
   useEffect(() => {
     const storedValues = JSON.parse(localStorage.getItem("values")) || [];
-    setTransactions(storedValues);
+    setTransactions(storedValues[value]);
   }, []);
 
   const totalAmount = transactions.reduce((acc, val) => acc + val, 0); // Sum of all transactions
