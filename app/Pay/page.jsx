@@ -63,7 +63,7 @@ function TransactionInput() {
           style={{ padding: "10px", marginRight: "10px" }}
         />
         <button onClick={handleAddTransaction} style={{ padding: "10px" }}>
-          proceede
+         Pay
         </button>
       </div>
     </>
